@@ -1,0 +1,125 @@
+{%load static%}
+{%load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Contas</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
+</head>
+<body>
+    <h1>Empresas</h1>
+    <table class="table table-dark table-striped">
+
+        <thead>
+            <th>Apelido</th>
+            <th>CNPJ</th>
+
+
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="{% url 'index' %}">{{empresanome.nome}}</a></td>
+                <td>{{empresanome.cnpj}}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+        <h1>Contas</h1>
+                <label>Pesuisar Conta por nome</label>
+                <form method="post">
+                     {% csrf_token %}
+                    <input type="hidden" name="record">
+                    <button class="btn-secondary">Gravar</button>
+               </form>
+                <br/>
+                <br/>
+                <br/>
+                <p  id="pegaaudio" name="pegaaudio" style="color:red;"> {{data}}</p>
+                <button id="btn2" class="btn-secondary">Enviar para pesquisa</button>
+                <input id="busca"  name="busca" type="text" {{data}}>
+                <button id="btn1" class="btn-secondary">Pesquisar</button>
+
+
+                <table id="Tab" class="table table-dark table-striped">
+            {% if contacontabil %}
+                <thead>
+                    <tr>
+
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Contas</th>
+                        <th scope="col">IVA</th>
+                        <th scope="col">Credito</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for contas in contacontabil %}
+                    <tr>
+                        <td scope="row">{{contas.codigo}}</a></td>
+                        <td scope="row">{{contas.descricao}}</td>
+                        <td scope="row">{{contas.iva}}</td>
+                        <td scope="row">{{contas.credito}}</td>
+
+                    </tr>
+
+                    {% endfor %}
+            {% else %}
+                <h2> Sem contas cadastradas para essa empresa</h2>
+            {% endif %}
+                </tbody>
+        </table>
+
+{% bootstrap_javascript jquery='full' %}
+
+<script>
+    document.getElementById("btn2").addEventListener("click",mudar_texto)
+function mudar_texto(){
+
+
+        var pegaaudio = document.getElementById("pegaaudio").innerHTML;
+        var textobusca = pegaaudio.toString();
+
+        document.getElementById("busca").value = textobusca.trim();
+
+        console.log(textobusca);
+}
+
+    document.getElementById("btn1").addEventListener("click",pesquisar)
+
+function pesquisar(){
+    var coluna = "1";
+    var filtrar , tabela, tr, td, th, i;
+
+    filtrar = document.getElementById("busca");
+    filtrar = filtrar.value.toUpperCase();
+
+    tabela = document.getElementById("Tab");
+    tr = tabela.getElementsByTagName("tr");
+    th = tabela.getElementsByTagName("th");
+
+    for ( i = 0; i < tr.length; i++){
+        td = tr[i].getElementsByTagName("td")[coluna];
+
+        if (td){
+            if(td.innerHTML.toUpperCase().indexOf(filtrar) > -1){
+               tr[i].style.display="";
+
+        }else{
+            tr[i].style.display="none";
+        }
+    }
+
+    }
+
+}
+</script>
+
+
+</body>
+</html>

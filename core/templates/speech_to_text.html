@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form method="post">
+    {% csrf_token %}
+<input type="hidden" name="record">
+<button class="button button5">Record</button>
+</form>
+<br/>
+<br/>
+<br/>
+    <h1 style="color:red;"> {{data}}</h1>
+
+</body>
+</html>
